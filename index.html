@@ -216,7 +216,6 @@
         
         ul, ol {
             margin-left: 24px;
-            margin-bottom: 20px;
         }
         
         li {
@@ -646,6 +645,25 @@
                 border: 1px solid #ccc;
             }
         }
+
+    @media print {
+        .content-section, 
+        .safety-section,
+        .icon-explanation,
+        .tip-box,
+        .warning-box,
+        .danger-box,
+        .step-box,
+        .contact-info,
+        .document-info,
+        .table-of-contents,
+        .image-placeholder {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            margin-bottom: 20px !important;
+        }
+    }
+        
     </style>
 </head>
 
