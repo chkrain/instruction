@@ -52,7 +52,6 @@
         .container {
             max-width: var(--container-width);
             margin: 0 auto;
-            padding: 0 20px;
         }
         
         header {
@@ -663,46 +662,483 @@
         }
     }
         
-    
-.print-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--primary-color);
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-}
-.print-toggle input { margin-left: 4px; }
-
-body.print-mode {
-    background: white !important;
-}
-body.print-mode main {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 20px !important;
-    box-shadow: none !important;
-    background: white !important;
-}
-body.print-mode header, body.print-mode .section-nav, body.print-mode .back-to-top {
-    display: none !important;
-}
-body.print-mode .table-of-contents, body.print-mode .document-info {
-    border: 1px solid #aaa !important;
-}
-@media print {
-    /* Печатный вариант по умолчанию */
-    header, .section-nav, .back-to-top { display: none !important; }
-    body { background: white !important; }
-    main { box-shadow: none; margin: 0; padding: 20px; }
-    .table-of-contents, .tip-box, .warning-box, .danger-box, .step-box {
-        box-shadow: none; border: 1px solid #ccc;
+        
+    .print-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary-color);
+        padding: 6px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
     }
-    /* Нумерация страниц (в браузерах, поддерживающих) */
-    @page { size: A4; margin: 20mm; }
-}
+    .print-toggle input { margin-left: 4px; }
+
+    body.print-mode {
+        background: white !important;
+    }
+    body.print-mode main {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 20px !important;
+        box-shadow: none !important;
+        background: white !important;
+    }
+    body.print-mode header, body.print-mode .section-nav, body.print-mode .back-to-top {
+        display: none !important;
+    }
+    body.print-mode .table-of-contents, body.print-mode .document-info {
+        border: 1px solid #aaa !important;
+    }
+    @media print {
+        /* Печатный вариант по умолчанию */
+        header, .section-nav, .back-to-top { display: none !important; }
+        body { background: white !important; }
+        main { box-shadow: none; margin: 0; padding: 20px; }
+        .table-of-contents, .tip-box, .warning-box, .danger-box, .step-box {
+            box-shadow: none; border: 1px solid #ccc;
+        }
+        @page { size: A4; margin: 20mm; }
+    }
+
+        :root {
+            --primary-color: #1e3a5f;
+            --primary-dark: #0f2a4a;
+            --primary-light: #2d4d7a;
+            --secondary-color: #3a6ea5;
+            --accent-color: #0056b3;
+            --light-color: #f8fafc;
+            --light-gray: #eef2f6;
+            --medium-gray: #d1d9e6;
+            --dark-color: #2d3748;
+            --text-color: #2d3748;
+            --text-light: #718096;
+            --success-color: #2e7d32;
+            --warning-color: #ed6c02;
+            --danger-color: #d32f2f;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+            display: none;
+        }
+
+        .test-section.active {
+            display: block;
+        }
+
+        .question-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .timer {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .timer.warning {
+            background: var(--warning-color);
+        }
+
+        .timer.danger {
+            background: var(--danger-color);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--primary-dark);
+            line-height: 1.8;
+        }
+
+        .options-container {
+            margin-bottom: 40px;
+        }
+
+        .option {
+            background: var(--light-gray);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            background: #e4e8f0;
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            border-color: var(--accent-color);
+            background: rgba(0, 86, 179, 0.1);
+        }
+
+        .option-label {
+            background: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex-grow: 1;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--dark-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--medium-gray);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .start-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 50px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .start-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        }
+
+        .results-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 50px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+        .result-grade {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .certificate {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid var(--warning-color);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--box-shadow);
+        }
+
+        .certificate h3 {
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .certificate-info {
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+
+        .certificate-info p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .score-badge {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .history-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .history-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .history-item {
+            background: var(--light-gray);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            background: rgba(211, 47, 47, 0.1);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .question-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        .question-feedback.correct {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .question-feedback.incorrect {
+            background: rgba(211, 47, 47, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .completion-message {
+            font-size: 1.2rem;
+            margin: 30px 0;
+            color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header, .test-section, .start-section, .results-section {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+            
+            .option {
+                padding: 15px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .score-display {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navigation {
+                flex-direction: column;
+            }
+            
+            .question-counter {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .certificate {
+                padding: 25px;
+            }
+            
+            .certificate h3 {
+                font-size: 1.5rem;
+            }
+        }
 
 </style>
 </head>
@@ -715,11 +1151,12 @@ body.print-mode .table-of-contents, body.print-mode .document-info {
             </div>
             <nav>
                 <ul>
-                    <li><a href="#safety">Требования&nbsp;безопасности</a></li>
-                    <li><a href="#responsibilities">Обязанности&nbsp;оператора</a></li>
-                    <li><a href="#preparation">Подготовка&nbsp;к&nbsp;работе</a></li>
+                    <li><a href="#safety">Безопасность</a></li>
+                    <li><a href="#responsibilities">Обязанности</a></li>
+                    <li><a href="#preparation">Перед&nbsp;работой</a></li>
                     <li><a href="#interface">Интерфейс</a></li>
                     <li><a href="#emergency">Аварии</a></li>
+                    <li><a href="#exam">Тест</a></li>
                 </ul>
             </nav>
 
@@ -1596,8 +2033,81 @@ body.print-mode .table-of-contents, body.print-mode .document-info {
                 </div>
             </section>
         </main>
-        
-        <footer>
+
+        <div class="container" id="exam">
+            <div class="header">
+                <h1>Тестирование знаний технической документации</h1>
+                <p>Система управления линией переработки и фасовки трепела</p>
+            </div>
+
+            <div class="start-section" id="startSection">
+                <h2>Начать тестирование</h2>
+                <div class="form-group">
+                    <label for="userName">Введите ваше ФИО:</label>
+                    <input type="text" id="userName" class="form-control" placeholder="Иванов Иван Иванович">
+                    <div class="error-message" id="nameError">Пожалуйста, введите ваше ФИО</div>
+                </div>
+                <div class="form-group">
+                    <label>Время на выполнение: <strong>45 минут</strong></label><br>
+                    <label>Количество вопросов: <strong id="totalQuestions">63</strong></label><br>
+                    <label>Пропуск вопроса считается неверным ответом</label>
+                </div>
+                <button class="btn btn-primary" onclick="startTest()">Начать тест</button>
+            </div>
+
+            <div class="test-section" id="testSection">
+                <div class="question-counter">
+                    <div>
+                        <strong>Вопрос <span id="currentQuestion">1</span> из <span id="totalQuestionsTest">0</span></strong>
+                    </div>
+                    <div class="timer" id="timer">45:00</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                
+                <div class="question-text" id="questionText"></div>
+                
+                <div class="options-container" id="optionsContainer"></div>
+                
+                <div class="question-feedback" id="questionFeedback"></div>
+                
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn">Назад</button>
+                    <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">Следующий вопрос</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection">
+                <h2>Результаты тестирования</h2>
+                
+                <div class="certificate">
+                    <h3>Сертификат о прохождении тестирования</h3>
+                    <div class="certificate-info">
+                        <p><strong>Выдан:</strong> <span id="certificateName"></span></p>
+                        <p><strong>Дата:</strong> <span id="certificateDate"></span></p>
+                        <p><strong>Успешно пройдено тестирование по технической документации</strong></p>
+                    </div>
+                    <div class="score-badge" id="certificateScore">0%</div>
+                    <p><strong>ООО "Техресурс"</strong></p>
+                </div>
+                
+                <div class="score-display" id="finalScore">0%</div>
+                <div class="result-grade" id="resultGrade"></div>
+                
+                <div class="completion-message" id="completionMessage"></div>
+                
+                <div class="history-section">
+                    <h4>Предыдущие результаты</h4>
+                    <div id="historyList"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="restartTest()" style="margin-top: 30px;">Пройти тест заново</button>
+            </div>
+        </div>
+
+        <footer style="margin-top: 8svh;">
             <p>© 2025 ООО "Техресурс"</p>
         </footer>
     </div>
@@ -1605,7 +2115,6 @@ body.print-mode .table-of-contents, body.print-mode .document-info {
     <a href="#" class="back-to-top" id="backToTop">↑</a>
 
     <script>
-        // Существующий JavaScript код
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1643,19 +2152,940 @@ body.print-mode .table-of-contents, body.print-mode .document-info {
     </script>
 
     <script>
-        // Переключатель печатного режима
         const printToggle = document.getElementById('printModeToggle');
         printToggle.addEventListener('change', (e) => {
             if (e.target.checked) document.body.classList.add('print-mode');
             else document.body.classList.remove('print-mode');
         });
 
-        // Удобная кнопка "Сохранить в PDF"
         function saveAsPDF() {
             document.body.classList.add('print-mode');
             setTimeout(() => { window.print(); }, 300);
         }
     </script>
+    <script>
+        const questions = [
+            {
+                question: "Что является критически важным требованием при работе горелки?",
+                options: [
+                    "Наличие средств индивидуальной защиты",
+                    "Работа дымососа (М12) на скорости 100%",
+                    "Контроль температуры в помещении",
+                    "Проверка уровня масла в компрессоре"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой документ оператору нужно прочитать перед работой?",
+                options: [
+                    "Действующую инструкцию",
+                    "СанПиН 2.2.4.3359-16",
+                    "ТР ТС 019/2011",
+                    "Федеральный закон № 123-ФЗ"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что должен сделать оператор при обнаружении неисправности оборудования?",
+                options: [
+                    "Попытаться устранить неисправность самостоятельно",
+                    "Продолжить работу, если неисправность не критическая",
+                    "Сообщить непосредственному руководителю",
+                    "Зафиксировать в журнале и продолжить работу"
+                ],
+                correct: 2
+            },
+            {
+                question: "Какое время отводится на выполнение ТО по моточасам?",
+                options: [
+                    "Каждые 50 моточасов",
+                    "Каждые 100 моточасов",
+                    "Каждые 300 моточасов",
+                    "Каждые 500 моточасов"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что означает значок замка 🔒 на пульте управления станцией?",
+                options: [
+                    "Станция работает в ручном режиме",
+                    "Станция заблокирована по ошибке",
+                    "Станция требует ТО",
+                    "Станция отключена от сети"
+                ],
+                correct: 1
+            },
+            {
+                question: "При каких обстоятельствах следует обратиться за помощью специалистов техподдержки?",
+                options: [
+                    "При любом возникающем вопросе",
+                    "Обращаться за помощью запрещено",
+                    "Если безрезультатно проделаны все действия, указанные в инструкции",
+                    "Если безрезультатно выполнено одно из действий, указанных в иструкции"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что запрещено делать при работе с вращающимися механизмами?",
+                options: [
+                    "Проводить визуальный осмотр",
+                    "Снимать ограждения во время работы",
+                    "Контролировать температуру подшипников",
+                    "Проверять натяжение ремней при остановке"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой режим блокирует дистанционное управление станцией?",
+                options: [
+                    "Автоматический режим",
+                    "Ручной режим",
+                    "Режим наладки",
+                    "Каскадный режим"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать при внезапном отключении электроэнергии?",
+                options: [
+                    "Немедленно перезапустить систему",
+                    "Нажать аварийный стоп",
+                    "Проверить работу резервного генератора",
+                    "Продолжить работу в ручном режиме"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой станции соответствует обозначение М12?",
+                options: [
+                    "Сушильный барабан",
+                    "Дымосос",
+                    "Дробилка валковая",
+                    "Конвейер на бункер"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что означает красный кружок внизу бункера на экране сортировки?",
+                options: [
+                    "Бункер заполнен",
+                    "Сработал датчик минимума",
+                    "Ошибка работы конвейера",
+                    "Требуется очистка бункера"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой график показывает скорости частотных пускателей в процентах?",
+                options: [
+                    "График РАБОТА",
+                    "График ТЕМПЕРАТУРЫ",
+                    "График ВЛАЖНОСТЬ",
+                    "График ЧП"
+                ],
+                correct: 3
+            },
+            {
+                question: "Что делать, если человека зажевал конвейер и он не в состоянии дернуть трос?",
+                options: [
+                    "Завершить текущую операцию",
+                    "Немедленно остановить оборудование любым возможным способом",
+                    "Бежать к тросу оборудования",
+                    "Обратиться в медпункт после работы"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой документ содержит полные требования безопасности?",
+                options: [
+                    "Настоящая техническая документация",
+                    "Паспорт оборудования",
+                    "Журнал инструктажей",
+                    "Технологический регламент"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что означает галочка в режиме наладки?",
+                options: [
+                    "Оборудование можно запускать без зависимостей",
+                    "Оборудование требует ремонта",
+                    "Оборудование работает в автоматическом режиме",
+                    "Оборудование заблокировано"
+                ],
+                correct: 0
+            },
+            {
+                question: "Какая станция является ленточным питателем (загрузкой)?",
+                options: [
+                    "М1",
+                    "М2", 
+                    "М3",
+                    "М4"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что делать при срабатывании тросового выключателя?",
+                options: [
+                    "Продолжить работу, обойдя трос",
+                    "Нажать кнопку сброса троса по месту, устранив причину",
+                    "Выключить только аварийный участок",
+                    "Ожидать автоматического сброса"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать, если конвейер включен на скаде, но в действительности не вращается",
+                options: [
+                    "Остановить его и включить заново",
+                    "Проверить частотный преобразователь, соответствующий оборудованию",
+                    "Позвонить специалисту технической поддержки", 
+                    "Нажать кнопку аварийного останова"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что отображается на экране сушки?",
+                options: [
+                    "Только оборудование до барабана",
+                    "Только оборудование после барабана",
+                    "Оборудование до барабана и системы аспирации, вентиляции",
+                    "Только графики температур"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что делать, если конвейер на бункер выключился",
+                options: [
+                    "Освободить бункер хотя бы до уровня ниже максимального и сбросить блокировку",
+                    "Дернуть трос", 
+                    "Посмотреть автоматический выключатель в щитовой",
+                    "Игнорировать и продолжать работу на других линиях"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что означает зеленый фон на графике 'РАБОТА'?",
+                options: [
+                    "Останов оборудования",
+                    "Пуск оборудования",
+                    "Аварийная ситуация",
+                    "Ручной режим"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что нужно сделать перед началом рабочего дня",
+                options: [
+                    "Открыть на скаду и действовать по плану включения оборудования",
+                    "Нажать кнопку аварийного останова",
+                    "Проверить каждое оборудование, подшипники, ремни, тросы", 
+                    "Включить горелку"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что делать в случае необходимости отойти от операторского ПК",
+                options: [
+                    "Ничего, если отойти нужно ненадолго",
+                    "Попросить уполномоченное лицо проконтролировать работу системы с операторской",
+                    "Немедленно остановить оборудование",
+                    "Включить сирену до момента возвращения"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой график показывает температуры на выходе из барабана?",
+                options: [
+                    "График РАБОТА",
+                    "График ТЕМПЕРАТУРЫ",
+                    "График ВЛАЖНОСТЬ",
+                    "График ЧП"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какая клавиша на клавиатуре дублирует кнопку экстренного останова?",
+                options: [
+                    "F1",
+                    "F5",
+                    "ESC",
+                    "Enter"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что происходит при срабатывании датчика максимума в бункере?",
+                options: [
+                    "Останавливается предыдущий конвейер",
+                    "Загорается красный кружок",
+                    "Появляется восклицательный знак",
+                    "Включается аварийная сигнализация"
+                ],
+                correct: 2
+            },
+            {
+                question: "Какой интервал между включениями дымососа (М12) должен соблюдаться?",
+                options: [
+                    "Не менее 1 минуты",
+                    "Не менее 5 минут",
+                    "Не менее 10 минут",
+                    "Не менее 30 минут"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что означает значок молнии на пульте управления?",
+                options: [
+                    "Станция заблокирована",
+                    "Станция в работе",
+                    "Ручной режим",
+                    "Требуется ТО"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какое оборудование управляется только местно и имеет собственный паспорт?",
+                options: [
+                    "Сушильный барабан",
+                    "Станции фасовки",
+                    "Дымосос",
+                    "Все конвейеры"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать если конвейер крутится, но на СКАДА отображается как остановленный?",
+                options: [
+                    "Продолжить работу",
+                    "Проверить датчик вращения",
+                    "Увеличить скорость",
+                    "Выключить и включить заново"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какое оборудование необходимо включить перед началом работы?",
+                options: [
+                    "Все перечисленное",
+                    "Шкаф управления фильтром дымососа",
+                    "Аспирацию, вентиляциб, дымосос", 
+                    "Компрессор"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что означает красный цвет в отображении информации о статусе?",
+                options: [
+                    "Нормальная работа",
+                    "Предупреждение о необходимости начать ТО",
+                    "Аварийная ситуация или ситуация требующая внимания",
+                    "Режим наладки, при котором запрещена эксплуатация"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что делать, если двигатель начал гудеть при работе?",
+                options: [
+                    "Немедленно остановить оборудование и сообщить начальству",
+                    "Проигнорировать",
+                    "Обратиться за помощью к технической поддержке", 
+                    "Понюхать, если не пахнет горелым - продолжить работу"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что происходит при автоматическом останова оборудования?",
+                options: [
+                    "Все останавливается одновременно",
+                    "Оборудование останавливается с учетом времени останова",
+                    "Только аварийные станции останавливаются",
+                    "Останов происходит в случайном порядке"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой датчик располагается после дробилки М15?",
+                options: [
+                    "Датчик температуры",
+                    "Датчик влажности",
+                    "Датчик вращения",
+                    "Датчик уровня"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что такое 'останов' в дополнительном меню мотора?",
+                options: [
+                    "Время запуска оборудования",
+                    "Время работы до ТО",
+                    "Время останова при автоматическом останове",
+                    "Задержка между включениями"
+                ],
+                correct: 2
+            },
+            {
+                question: "Какая кнопка вызывает дополнительное меню настроек станции?",
+                options: [
+                    "Кнопка 'работа'",
+                    "Кнопка 'замок'",
+                    "Кнопка 'руки'",
+                    "Кнопка 'настройки'"
+                ],
+                correct: 3
+            },
+            {
+                question: "Что означает слово 'ГОТОВ' на кнопках каскадного управления?",
+                options: [
+                    "Оборудование работает",
+                    "Оборудование можно запускать каскадно",
+                    "Оборудование требует ремонта",
+                    "Оборудование в ручном режиме"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой двухкнопочный аварийный пульт находится на улице?",
+                options: [
+                    "Пульт барабана (М11)",
+                    "Пульт питателя (М1)",
+                    "Пульт дымососа (М12)",
+                    "Пульт дробилки (М4)"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать при аварии горелки?",
+                options: [
+                    "Продолжить работу в ручном режиме",
+                    "Немедленно остановить подачу топлива",
+                    "Увеличить подачу воздуха",
+                    "Ожидать автоматического перезапуска"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой график показывает влажность материала?",
+                options: [
+                    "График РАБОТА",
+                    "График ТЕМПЕРАТУРЫ",
+                    "График ВЛАЖНОСТЬ",
+                    "График ЧП"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что означает желто-белый треугольник с восклицательным знаком на экране бункера?",
+                options: [
+                    "Бункер пустой",
+                    "Сработал датчик минимума",
+                    "Сработал датчик максимума",
+                    "Ошибка датчика"
+                ],
+                correct: 2
+            },
+            {
+                question: "Можно ли находиться на конвейере во время работы?",
+                options: [
+                    "Да, но только осторожно",
+                    "Нельзя в любом случае",
+                    "Можно, если необходима срочная проверка", 
+                    "Нельзя при скорости выше 10%"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что означает сигнал сирены 2 секунды звука / 2 секунды ожидания?",
+                options: [
+                    "Предупреждение о старте",
+                    "Ошибка включения барабана без дымососа",
+                    "Нажата кнопка EMERGENCY STOP",
+                    "Завершение работы смены"
+                ],
+                correct: 1
+            },
+            {
+                question: "Как часто необходимо проводить визуальный осмотр конвейерных лент?",
+                options: [
+                    "Ежедневно",
+                    "Ежесменно",
+                    "Еженедельно",
+                    "Ежемесячно"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать при ухудшении тяги в системе дымоудаления?",
+                options: [
+                    "Увеличить скорость дымососа",
+                    "Немедленно проверить фильтры и циклон",
+                    "Продолжить работу в штатном режиме",
+                    "Выключить только горелку"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать, если сработана авария оборудования?",
+                options: [
+                    "Немедленно сообщить начальству",
+                    "Продолжить работу",
+                    "Проверить оборудования и устранить причины возникновения аварии", 
+                    "Включить шнек М22, при этом контролируя наполнение биг-бега"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что означает мигающий синий цвет индикаторов контроллера?",
+                options: [
+                    "Контроллер выключен",
+                    "Контроллер работает",
+                    "Аварийная ситуация",
+                    "Режим программирования"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какой график отображает пуски и остановы оборудования?",
+                options: [
+                    "График РАБОТА",
+                    "График ТЕМПЕРАТУРЫ",
+                    "График ВЛАЖНОСТЬ",
+                    "График ЧП"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что делать при обнаружении засора циклона, при котором температура горелки сильно повышается?",
+                options: [
+                    "Продолжить работу до плановой очистки",
+                    "Немедленно остановить линию и очистить",
+                    "Увеличить производительность шнека М13",
+                    "Игнорировать"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать, если необходимо остановить загрузку с улицы?",
+                options: [
+                    "Вернуться в операторскую и остановить со скады",
+                    "Останавливать загрузку запрещается",
+                    "Остановить двухкнопочным пультом, а после решения проблемы запустить", 
+                    "Остановить оборудование каскадно"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что означает сигнал сирены 4 секунды звука / 1.5 секунды ожидания?",
+                options: [
+                    "Предупреждение о старте",
+                    "Ошибка включения барабана без дымососа",
+                    "Нажата кнопка аварийного останова",
+                    "Завершение работы смены"
+                ],
+                correct: 2
+            },
+            {
+                question: "Как часто проверяются датчики вращения и тросовые выключатели?",
+                options: [
+                    "Каждые 50 моточасов",
+                    "Каждые 100 моточасов",
+                    "Каждые 300 моточасов",
+                    "Каждые 500 моточасов"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать при обрыве конвейерной ленты?",
+                options: [
+                    "Попытаться запустить снова",
+                    "Немедленно остановить линию",
+                    "Продолжить работу на других линиях",
+                    "Обойти место обхода и продолжить"
+                ],
+                correct: 1
+            },
+            {
+                question: "Нужно ли проводить фасовку в случае срабатывания датчика максимума?",
+                options: [
+                    "Нужно, если прошло достаточно времени",
+                    "Нужно",
+                    "Нет, необходимо дождаться останова оборудования", 
+                    "Не нужно"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что означает зеленая плашка в отображении информации о статусе?",
+                options: [
+                    "Нормальная работа",
+                    "Предупреждение",
+                    "Аварийная ситуация",
+                    "Режим наладки"
+                ],
+                correct: 0
+            },
+            {
+                question: "Какие средства индивидуальной защиты необходимо использовать при работе с пылью?",
+                options: [
+                    "Только защитные очки",
+                    "Только перчатки",
+                    "Респиратор и защитные очки",
+                    "Только спецодежду"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что делать при обнаружении человека в опасной зоне работающего оборудования?",
+                options: [
+                    "Кричать, чтобы он отошел",
+                    "Немедленно остановить оборудование",
+                    "Сообщить руководителю",
+                    "Продолжить работу, если он опытный"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какая первая помощь оказывается при электротравме?",
+                options: [
+                    "Немедленно оттащить пострадавшего от оборудования",
+                    "Освободить от действия тока, обесточив оборудование",
+                    "Начать делать искусственное дыхание",
+                    "Дать воды и уложить"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что запрещено при работе на высоте более 1,8 метра?",
+                options: [
+                    "Использовать лестницы",
+                    "Работать без ограждений или систем страховки",
+                    "Работать в спецодежде",
+                    "Иметь при себе инструменты"
+                ],
+                correct: 1
+            },
+            {
+                question: "Какие действия запрещены при работе с конвейерными лентами?",
+                options: [
+                    "Визуальный осмотр с расстояния",
+                    "Наступать на ленты или перелезать через них",
+                    "Контролировать натяжение при остановке",
+                    "Проверять состояние роликов"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать при попадании инородного тела в глаз?",
+                options: [
+                    "Промыть глаз водой",
+                    "Попытаться удалить предметом",
+                    "Протереть глаз рукой",
+                    "Продолжить работу до конца смены"
+                ],
+                correct: 0
+            },
+            {
+                question: "Что делать при обнаружении утечки топлива из системы горелки?",
+                options: [
+                    "Затянуть соединения",
+                    "Немедленно остановить горелку",
+                    "Продолжить работу, контролируя утечку",
+                    "Сообщить после смены"
+                ],
+                correct: 1
+            }
+        ];
 
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+        let userName = "";
+        let testStarted = false;
+        let timeLeft = 45 * 60; // 45 минут в секундах
+        let timerInterval = null;
+
+        const startSection = document.getElementById('startSection');
+        const testSection = document.getElementById('testSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const totalQuestionsSpan = document.getElementById('totalQuestions');
+        const totalQuestionsTestSpan = document.getElementById('totalQuestionsTest');
+        const currentQuestionSpan = document.getElementById('currentQuestion');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const progressFill = document.getElementById('progressFill');
+        const timerElement = document.getElementById('timer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const questionFeedback = document.getElementById('questionFeedback');
+        const nameError = document.getElementById('nameError');
+
+        function init() {
+            totalQuestionsSpan.textContent = questions.length;
+            totalQuestionsTestSpan.textContent = questions.length;
+            loadHistory();
+        }
+
+        function startTest() {
+            userName = document.getElementById('userName').value.trim();
+            
+            if (!userName) {
+                nameError.classList.add('show');
+                return;
+            }
+            
+            nameError.classList.remove('show');
+            
+            currentQuestionIndex = 0;
+            userAnswers = Array(questions.length).fill(null);
+            score = 0;
+            testStarted = true;
+            
+            startSection.style.display = 'none';
+            testSection.classList.add('active');
+            resultsSection.classList.remove('active');
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 45 * 60;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    finishTest();
+                }
+                
+                if (timeLeft <= 60) { 
+                    timerElement.classList.add('danger');
+                    timerElement.classList.remove('warning');
+                } else if (timeLeft <= 5 * 60) { 
+                    timerElement.classList.add('warning');
+                    timerElement.classList.remove('danger');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            currentQuestionSpan.textContent = currentQuestionIndex + 1;
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <div class="option-label">${String.fromCharCode(65 + index)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 'Завершить тест' : 'Следующий вопрос';
+            
+            questionFeedback.style.display = 'none';
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            options[optionIndex].classList.add('selected');
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                showFeedback('Пожалуйста, выберите ответ', 'incorrect');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                finishTest();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function showFeedback(message, type) {
+            questionFeedback.textContent = message;
+            questionFeedback.className = `question-feedback ${type}`;
+            questionFeedback.style.display = 'block';
+            
+            setTimeout(() => {
+                questionFeedback.style.display = 'none';
+            }, 3000);
+        }
+
+        function finishTest() {
+            clearInterval(timerInterval);
+            testStarted = false;
+            
+            let correctAnswers = 0;
+            questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    correctAnswers++;
+                }
+            });
+            
+            score = Math.round((correctAnswers / questions.length) * 100);
+            
+            testSection.classList.remove('active');
+            resultsSection.classList.add('active');
+            
+            document.getElementById('certificateName').textContent = userName;
+            document.getElementById('certificateDate').textContent = new Date().toLocaleDateString('ru-RU');
+            document.getElementById('certificateScore').textContent = `${score}%`;
+            document.getElementById('finalScore').textContent = `${score}%`;
+            
+            let grade = '';
+            let message = '';
+            
+            if (score === 100) {
+                grade = 'Отлично!';
+                message = 'Идеальный результат! Вы знаете техническую документацию.';
+            } else if (score >= 80) {
+                grade = 'Удовлетворительно';
+                message = 'Хороший результат! Вы хорошо ориентируетесь в технической документации, но нужно почитать ещё';
+            } else if (score >= 60) {
+                grade = 'Не пройдено';
+                message = 'Необходимо изучить документацию более внимательно.';
+            } else if (score >= 40) {
+                grade = 'Не пройдено';
+                message = 'Необходимо повторить материал и пройти тест снова';
+            } else {
+                grade = 'Не пройдено';
+                message = 'Требуется повторное изучение технической документации и прохождение инструктажа.';
+            }
+            
+            document.getElementById('resultGrade').textContent = grade;
+            document.getElementById('completionMessage').textContent = message;
+            
+            saveResult();
+        }
+
+        function saveResult() {
+            const results = JSON.parse(localStorage.getItem('testResults') || '[]');
+            
+            const result = {
+                name: userName,
+                score: score,
+                date: new Date().toISOString(),
+                timestamp: Date.now()
+            };
+            
+            results.unshift(result);
+            if (results.length > 5) results.pop();
+            
+            localStorage.setItem('testResults', JSON.stringify(results));
+            
+            loadHistory();
+        }
+
+        function loadHistory() {
+            const historyList = document.getElementById('historyList');
+            const results = JSON.parse(localStorage.getItem('testResults') || '[]');
+            
+            if (results.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: var(--text-light);">Нет сохраненных результатов</p>';
+                return;
+            }
+            
+            historyList.innerHTML = '';
+            results.forEach(result => {
+                const date = new Date(result.date);
+                const dateStr = date.toLocaleDateString('ru-RU');
+                const timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <div>
+                        <strong>${result.name}</strong><br>
+                        <small>${dateStr} ${timeStr}</small>
+                    </div>
+                    <div style="font-weight: bold; color: ${getScoreColor(result.score)}">
+                        ${result.score}%
+                    </div>
+                `;
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        function getScoreColor(score) {
+            if (score >= 80) return 'var(--success-color)';
+            if (score >= 60) return 'var(--warning-color)';
+            return 'var(--danger-color)';
+        }
+
+        function restartTest() {
+            startSection.style.display = 'block';
+            testSection.classList.remove('active');
+            resultsSection.classList.remove('active');
+            document.getElementById('userName').value = userName;
+        }
+
+        window.addEventListener('beforeunload', function(e) {
+            if (testStarted) {
+                e.preventDefault();
+                e.returnValue = 'Тест еще не завершен. Вы уверены, что хотите покинуть страницу?';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        document.addEventListener('keydown', function(e) {
+            if (!testStarted) return;
+            
+            switch(e.key) {
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    const optionIndex = parseInt(e.key) - 1;
+                    if (optionIndex >= 0 && optionIndex < 4) {
+                        selectOption(optionIndex);
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (!prevBtn.disabled) previousQuestion();
+                    break;
+                case 'ArrowRight':
+                case 'Enter':
+                    nextQuestion();
+                    e.preventDefault();
+                    break;
+            }
+        });
+    </script>
 </body>
 </html>
